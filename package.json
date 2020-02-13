@@ -2,8 +2,7 @@
 	"name": "functionpush",
 	"version": "0.0.1",
 	"dependencies": {
-		"uppercase": "^1.4.9",
-		"uppercase-core": "^1.4.10"
+		"uppercase-boot": "^1.4.7"
 	},
 	"main": "functionpush.js"
 }
