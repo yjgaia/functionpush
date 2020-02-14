@@ -104,9 +104,9 @@ let scanFunctionFolder = (moduleName, environmentName, path, load, broadcast) =>
 		});
 	});
 	
-	// 새 함수가 생겼을 때
+	// 새 함수가 생기거나, 함수가 수정될 때
 	FS.watch(path, (eventType, fileName) => {
-		if (eventType === 'rename') {
+		if (eventType === 'rename' || eventType === 'change') {
 			const filePath = `${path}/${fileName}`;
 			CHECK_FILE_EXISTS(filePath, (exists) => {
 				if (exists === true) {

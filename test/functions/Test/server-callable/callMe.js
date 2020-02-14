@@ -1,3 +1,3 @@
-(param, callback) => {
-	console.log(param);
+(message, callback) => {
+	console.log(message + ' Man!');
 };
