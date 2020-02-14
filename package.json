@@ -2,7 +2,7 @@
 	"name": "functionpush",
 	"version": "0.0.1",
 	"dependencies": {
-		"uppercase-boot": "^1.4.7"
+		"uppercase": "latest"
 	},
 	"main": "functionpush.js"
 }
