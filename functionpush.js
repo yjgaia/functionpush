@@ -1,4 +1,4 @@
-require('uppercase-boot');
+require('uppercase');
 
 const FS = require('fs');
 const Path = require('path');
