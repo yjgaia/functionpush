@@ -41,13 +41,13 @@ functionpush({
 * 실행 파일 - [실행](#실행) 코드가 저장된 실행 파일입니다.
 
 ## 특수 기능
-### `Functionpush.addReadyListener`
+### `functionpush.addReadyListener`
 애플리케이션의 실행 준비가 완료되면 실행되는 리스너를 등록합니다.
 
-### `Functionpush.stateStore`
+### `functionpush.stateStore`
 애플리케이션이 종료되면 데이터가 유실됩니다.
 
-### `Functionpush.storageStore`
+### `functionpush.storageStore`
 애플리케이션이 종료되어도 데이터가 유실되지 않습니다.
 
 ## 알아야 할 사항

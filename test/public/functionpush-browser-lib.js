@@ -6,7 +6,7 @@ const addFunction = (functionName, functionBody) => {
 	let parent = global;
 	EACH(nameParts, (namePart, i) => {
 		if (i === nameParts.length - 1) {
-			parent[namePart] = eval(functionBody);
+			parent[namePart] = eval('(' + functionBody + ')');
 		} else if (parent[namePart] === undefined) {
 			parent[namePart] = {};
 		}
@@ -69,7 +69,7 @@ const reconnect = RAR(() => {
 				addFunction(functionInfo.name, functionInfo.body);
 			});
 			
-			on('newcallableServerFunction', (callableServerFunctionName) => {
+			on('newCallableServerFunction', (callableServerFunctionName) => {
 				addCallableServerFunctionName(callableServerFunctionName, send);
 			});
 			

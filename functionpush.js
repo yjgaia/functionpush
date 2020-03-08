@@ -24,7 +24,7 @@ const loadModules = () => {
 	// 새 모듈이 생겼을 때
 	FS.watch('functions', (eventType, folderName) => {
 		if (eventType === 'rename') {
-			const folderPath = `${path}/${folderName}`;
+			const folderPath = `functions/${folderName}`;
 			CHECK_FILE_EXISTS(folderPath, (exists) => {
 				if (exists === true) {
 					CHECK_IS_FOLDER(folderPath, (isFolder) => {
@@ -72,7 +72,7 @@ const loadModuleScripts = (moduleName) => {
 				}, () => {});
 			}
 			
-			else if (folderName === 'server-callable') {
+			else if (folderName === 'server-call') {
 				scanFunctionFolder(moduleName, folderName, `functions/${moduleName}/${folderName}`, (functionName, functionBody) => {
 					installFunction(functionName, functionBody);
 					if (CHECK_IS_IN({
@@ -82,7 +82,7 @@ const loadModuleScripts = (moduleName) => {
 						callableServerFunctionNames.push(functionName);
 					}
 				}, (functionName) => {
-					broadcastNewcallableServerFunction(functionName);
+					broadcastNewCallableServerFunction(functionName);
 				});
 			}
 		});
@@ -95,10 +95,11 @@ let scanFunctionFolder = (moduleName, environmentName, path, load, broadcast) =>
 	
 	FIND_FILE_NAMES(path, (fileNames) => {
 		EACH(fileNames, (fileName) => {
-			if (Path.extname(fileName).toLowerCase() === '.js') {
+			const extname = Path.extname(fileName).toLowerCase();
+			if (extname === '.js' || extname === '.json') {
 				const filePath = `${path}/${fileName}`;
 				READ_FILE(filePath, (functionBody) => {
-					load(moduleName + filePath.substring(`functions/${moduleName}/${environmentName}`.length, filePath.length - 3).replace(/\//g, '.'), functionBody.toString());
+					load(moduleName + filePath.substring(`functions/${moduleName}/${environmentName}`.length, filePath.length - extname.length).replace(/\//g, '.'), functionBody.toString());
 				});
 			}
 		});
@@ -111,13 +112,16 @@ let scanFunctionFolder = (moduleName, environmentName, path, load, broadcast) =>
 			CHECK_FILE_EXISTS(filePath, (exists) => {
 				if (exists === true) {
 					CHECK_IS_FOLDER(filePath, (isFolder) => {
-						if (isFolder !== true && Path.extname(fileName).toLowerCase() === '.js') {
-							READ_FILE(filePath, (_functionBody) => {
-								const functionName = moduleName + filePath.substring(`functions/${moduleName}/${environmentName}`.length, filePath.length - 3).replace(/\//g, '.');
-								const functionBody = _functionBody.toString();
-								load(functionName, functionBody);
-								broadcast(functionName, functionBody);
-							});
+						if (isFolder !== true) {
+							const extname = Path.extname(fileName).toLowerCase();
+							if (extname === '.js' || extname === '.json') {
+								READ_FILE(filePath, (_functionBody) => {
+									const functionName = moduleName + filePath.substring(`functions/${moduleName}/${environmentName}`.length, filePath.length - extname.length).replace(/\//g, '.');
+									const functionBody = _functionBody.toString();
+									load(functionName, functionBody);
+									broadcast(functionName, functionBody);
+								});
+							}
 						}
 					});
 				}
@@ -140,7 +144,11 @@ const installFunction = (functionName, functionBody) => {
 	let parent = global;
 	EACH(nameParts, (namePart, i) => {
 		if (i === nameParts.length - 1) {
-			parent[namePart] = eval(functionBody);
+			try {
+				parent[namePart] = eval('(' + functionBody + ')');
+			} catch(error) {
+				SHOW_ERROR('functionpush', error.toString());
+			}
 		} else if (parent[namePart] === undefined) {
 			parent[namePart] = {};
 		}
@@ -171,10 +179,10 @@ const broadcastNewFunction = (functionInfo) => {
 	});
 };
 
-const broadcastNewcallableServerFunction = (functionName) => {
+const broadcastNewCallableServerFunction = (functionName) => {
 	EACH(sends, (send) => {
 		send({
-			methodName : 'newcallableServerFunction',
+			methodName : 'newCallableServerFunction',
 			data : functionName
 		});
 	});
