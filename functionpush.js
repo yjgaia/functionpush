@@ -4,6 +4,7 @@ const FS = require('fs');
 const Path = require('path');
 
 const browserFunctionBodies = {};
+const viewFunctionBodies = {};
 const callableServerFunctionNames = [];
 const sends = [];
 
@@ -48,6 +49,17 @@ const loadModuleScripts = (moduleName) => {
 					browserFunctionBodies[functionName] = functionBody;
 				}, (functionName, functionBody) => {
 					broadcastNewFunction({
+						name : functionName,
+						body : functionBody
+					});
+				});
+			}
+			
+			if (folderName === 'browser-view') {
+				scanFunctionFolder(moduleName, folderName, `functions/${moduleName}/${folderName}`, (functionName, functionBody) => {
+					viewFunctionBodies[functionName] = functionBody;
+				}, (functionName, functionBody) => {
+					broadcastNewViewFunction({
 						name : functionName,
 						body : functionBody
 					});
@@ -139,6 +151,11 @@ let scanFunctionFolder = (moduleName, environmentName, path, load, broadcast) =>
 };
 
 const installFunction = (functionName, functionBody) => {
+	
+	functionBody = functionBody.trim();
+	functionBody = functionBody[functionBody.length - 1] === ';' ? functionBody.substring(0, functionBody.length - 1) : functionBody;
+	functionBody = functionBody === '' ? 'undefined' : functionBody;
+	
 	const nameParts = functionName.split('.');
 	
 	let parent = global;
@@ -179,6 +196,15 @@ const broadcastNewFunction = (functionInfo) => {
 	});
 };
 
+const broadcastNewViewFunction = (functionInfo) => {
+	EACH(sends, (send) => {
+		send({
+			methodName : 'newViewFunction',
+			data : functionInfo
+		});
+	});
+};
+
 const broadcastNewCallableServerFunction = (functionName) => {
 	EACH(sends, (send) => {
 		send({
@@ -193,6 +219,7 @@ module.exports = (config) => {
 	//OPTIONAL: securedPort
 	//OPTIONAL: securedKeyFilePath
 	//OPTIONAL: securedCertFilePath
+	//OPTIONAL: defaultModuleName
 	
 	const webServer = WEB_SERVER({
 
@@ -205,6 +232,16 @@ module.exports = (config) => {
 		rootPath : 'public',
 		
 		isToNotUseResourceCache : true
+	}, {
+		notExistsResource : (resourcePath, requestInfo, response) => {
+			READ_FILE('public/index.html', (buffer) => {
+				response({
+					buffer : buffer,
+					contentType : 'text/html'
+				});
+			});
+			return false;
+		}
 	});
 	
 	WEB_SOCKET_SERVER(webServer, (clientInfo, on, off, send, disconnect) => {
@@ -212,7 +249,9 @@ module.exports = (config) => {
 		on('getFunctions', (notUsing, ret) => {
 			ret({
 				functionBodies : browserFunctionBodies,
-				callableServerFunctionNames : callableServerFunctionNames
+				viewFunctionBodies : viewFunctionBodies,
+				callableServerFunctionNames : callableServerFunctionNames,
+				defaultModuleName : config.defaultModuleName
 			});
 		});
 		

@@ -30,6 +30,15 @@ functionpush({
 * `mailUsername`
 * `mailPassword`
 
+### 뷰 관련 설정
+* `defaultModuleName` 기본 모듈 이름을 지정합니다. 그러면 주소에서 기본 모듈 이름을 생략할 수 있습니다.
+
+예) 기본 모듈 이름이 Hanul이라면, 아래와 같이 주소에서 모듈명을 생략할 수 있습니다.
+```
+http://localhost/Hanul/helloworld
+http://localhost/helloworld
+```
+
 ## 프로젝트 구조
 * `functions` 폴더 - 함수들을 저장하는 폴더입니다.
 	* `functions` 폴더 내 폴더들 - 모듈입니다. 폴더 이름이 모듈명이 됩니다.
