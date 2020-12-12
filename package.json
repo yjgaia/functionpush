@@ -2,10 +2,8 @@
     "name": "functionpush",
     "author": "Young Jae Sim",
     "homepage": "https://functionpush.com/",
-    "version": "0.0.1-beta.2",
-    "dependencies": {
-        "typescript": "^4.1.3"
-    },
+    "version": "0.0.1-beta.3",
+    "dependencies": {},
     "main": "./lib/main.js",
     "types": "./lib/main.d.ts"
 }
