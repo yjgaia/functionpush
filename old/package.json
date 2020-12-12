@@ -1,8 +1,0 @@
-{
-	"name": "functionpush",
-	"version": "0.0.2",
-	"dependencies": {
-		"uppercase": "^2.0.0-beta.20"
-	},
-	"main": "index.mjs"
-}

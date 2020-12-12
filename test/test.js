@@ -1,3 +1,3 @@
-require('../lib/main').default({
+require('../lib/node/main')({
 	port: 8214
 });

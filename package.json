@@ -3,7 +3,18 @@
     "author": "Young Jae Sim",
     "homepage": "https://functionpush.com/",
     "version": "0.0.1-beta.3",
-    "dependencies": {},
-    "main": "./lib/main.js",
-    "types": "./lib/main.d.ts"
+    "scripts": {
+        "browser-lib-dev": "webpack --mode development --watch --config browser-lib.webpack.dev.js",
+        "browser-lib-prod": "webpack --mode production --config browser-lib.webpack.prod.js"
+    },
+    "dependencies": {
+        "ts-loader": "^8.0.12",
+        "typescript": "^4.1.3",
+        "webpack": "^5.10.1"
+    },
+    "main": "./lib/node/main.js",
+    "types": "./lib/node/main.d.ts",
+    "devDependencies": {
+        "webpack-cli": "^4.2.0"
+    }
 }

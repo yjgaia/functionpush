@@ -1,6 +1,9 @@
 # functionpush
 Just functions. functions are everything.
 
+functionpush is a framework that allows functions to be automatically reflected in the application when they are modified.
+
+---
 I am tired of web development. Complex configuration, incidental compilation, all sorts of techniques...
 
 I love JavaScript and functional programming. So I make this web framework that works with just functions.
@@ -16,14 +19,18 @@ I hope it makes web development easier...
 yarn add functionpush
 ```
 
-## Documentation
-
 ## Usage
 ```
-require('functionpush').default({
+require('functionpush')({
 	port : 8212
 });
 ```
+
+## Setting Options
+* `httpPort`
+* `httpsPort`
+* `sslKeyFilePath`
+* `sslCertFilePath`
 
 ## Roadmap
 
