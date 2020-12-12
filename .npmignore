@@ -1,0 +1,12 @@
+doc
+src
+old
+test
+.git
+.git/
+.vscode/
+package-lock.json
+yarn.lock
+.DS_Store
+.yarnrc
+tmp

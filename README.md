@@ -11,6 +11,22 @@ I hope it makes web development easier...
 - You can only make your application SPA. In other words, search engines will not work.
 - functionpush does not use the standard modular approach(CommonJS, AMD). Existing Node.js modules must be installed and used first.
 
+## Installing
+```
+yarn add functionpush
+```
+
+## Documentation
+
+## Usage
+```
+require('functionpush').default({
+	port : 8212
+});
+```
+
+## Roadmap
+
 ## License
 [MIT](LICENSE)
 
