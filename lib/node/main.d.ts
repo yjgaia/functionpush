@@ -1,8 +1,8 @@
 declare const functionpush: (options: {
-    httpPort?: number | undefined;
-    httpsPort?: number | undefined;
-    sslKeyFilePath?: number | undefined;
-    sslCertFilePath?: number | undefined;
+    httpPort?: number;
+    httpsPort?: number;
+    sslKeyFilePath?: number;
+    sslCertFilePath?: number;
 }) => void;
 export = functionpush;
 //# sourceMappingURL=main.d.ts.map
